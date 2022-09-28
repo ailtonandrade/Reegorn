@@ -21,8 +21,13 @@ public class MovementPlayer : MonoBehaviour
     void Update()
     {
         if (movement.magnitude >= 0.1f) 
-        {     
-            float targetAngle = Mathf.Atan2(movement.x, movement.z) * Mathf.Rad2Deg;     
+        {     //mathf.atan2 retorna o resultado do calculo de angulo do movimento olhando em uma
+              //perspectiva 2d topdown do personagem(x e y) lastreado pelo resultado do getaxis h/v
+              //ex? (x = 0,7 , y = 0,7 ) = 0,785398
+              // utilizando mathf.rad2deg ele transformará radius em graus. trazendo 45
+              //sendo assim, ele estará rotacionando para 45 graus
+            float targetAngle = Mathf.Atan2(movement.x, movement.z) * Mathf.Rad2Deg;
+            //recebe a rotação no eixo Y virando para o local correto     
             transform.rotation = Quaternion.Euler(0, targetAngle, 0);     
             direction = targetAngle;
             controller.Move(movement* torqueRotation * Time.deltaTime); 
