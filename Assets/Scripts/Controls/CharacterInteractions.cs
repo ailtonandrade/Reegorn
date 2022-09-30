@@ -8,7 +8,6 @@ using TMPro;
 
 public class CharacterInteractions : MonoBehaviour
 {
-    public TextMeshPro NameSelectedObject;
     public int objClickedId;
     // Start is called before the first frame update
     void Start()
@@ -33,10 +32,12 @@ public class CharacterInteractions : MonoBehaviour
         print(internalId);
     }
     public void SetHUDTopCenter(string name, string? hp){
-        TextMeshPro element = GameObject.Find("HUD")
-                        .gameObject.transform.GetChild(0)
-                        .gameObject.transform.GetChild(0).gameObject.transform.GetComponent<TextMeshPro>();
-        element.SetText(name);
-        //GameObject.Find("HPSelectedObject").GetComponent<Text>().text = hp;
+        GameObject TopCenterHUD = GameObject.Find("TopCenterHUD");
+
+        TopCenterHUD.GetComponent<TopCenterHUDSettings>()
+        .SetNameSelectedObject(name);
+
+        TopCenterHUD.GetComponent<TopCenterHUDSettings>()
+        .SetHpSelectedObject(hp);
     }
 }
