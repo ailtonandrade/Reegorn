@@ -16,11 +16,11 @@ public class CameraMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-    offsetx = -10;
-    offsety = 15;
-    offsetz = -10;
-    rotationx = 45;
-    rotationy = 45;
+    offsetx = 4;
+    offsety = 14;
+    offsetz = -15;
+    rotationx = 35;
+    rotationy = -6;
     rotationz = 0;
         target = GameObject.FindGameObjectWithTag("Player");
     }
