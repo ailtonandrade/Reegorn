@@ -24,9 +24,9 @@ public class CharacterInteractions : MonoBehaviour
         Logger(obj.Id,obj.Name,obj.InternalId);
     }
     public void Logger(int? id,string? name,string? internalId){
-        print(id);
-        print(name);
-        print(internalId);
+        print($"{id} - {name} - {internalId}");
+        print(AuthenticateService.session);
+
     }
     public void SetHUDTopCenter(string name, string? hp){
         GameObject TopCenterHUD = GameObject.Find("TopCenterHUD");
