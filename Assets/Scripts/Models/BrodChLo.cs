@@ -11,8 +11,10 @@ public class BrodChLo
 }
 
 public static BrodChLo parse(Vector3 pos,float rot){
-this.posX = _pos.x.ToString("N3");
-this.posY = _pos.y.ToString("N3");
-this.posZ = _pos.z.ToString("N3");
-this.rot = _rot.ToString("N3"); 
+    BrodChLo b = new BrodChLo();
+    b.posX = _pos.x.ToString("N3");
+    b.posY = _pos.y.ToString("N3");
+    b.posZ = _pos.z.ToString("N3");
+    b.rot = _rot.ToString("N3"); 
+return b;
 }
