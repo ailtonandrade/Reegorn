@@ -16,7 +16,7 @@ public class EnvironmentObjectsService : MonoBehaviour
     {
         GameObject.Find("LoadingModal").SetActive(true);
         HttpClient client = new HttpClient();
-        var response = await client.GetAsync("http://localhost:5221/environment-object");
+        var response = await client.GetAsync(UtilService.GenUri("environment-object"));
         if (response.StatusCode == System.Net.HttpStatusCode.OK)
         {
             var contents = await response.Content.ReadAsStringAsync();
