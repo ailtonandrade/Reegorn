@@ -4,7 +4,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
-public class UtilService
+public class UtilService : MonoBehaviour
 {
     private static string url = "http://localhost:5221/";
 
@@ -30,4 +30,15 @@ public class UtilService
     {
         return new HttpClient().GetAsync(url + parameters);
     }
-}
+    
+public static void ShowLoading(string? detail)
+    {
+        GameObject.Find("HUD/HomeScreen/LoadingModal").gameObject.transform.localScale = new Vector3(1, 1, 0);
+        //implementar msg detail
+      
+    }
+    
+public static void HideLoading()
+    {
+        GameObject.Find("LoadingModal").gameObject.transform.localScale = new Vector3(0, 0, 0);
+    }
