@@ -9,7 +9,8 @@ public class AuthenticateService : MonoBehaviour
 
     public async Task loginAsync(UserModel user)
     {
-
+        user.UserName = "andrade01";
+        user.AccessKey = "123456";
         GameObject.Find("HUD/HomeScreen/LoadingModal").gameObject.transform.localScale = new Vector3(1, 1, 0);
         try
         {

@@ -128,8 +128,8 @@ public class HomeLoginScreenView : MonoBehaviour
         UserModel data = new UserModel();
         data.UserName = user;
         data.AccessKey = access;
-        if(!string.IsNullOrEmpty(user) && !string.IsNullOrEmpty(access)){
+        //if(!string.IsNullOrEmpty(user) && !string.IsNullOrEmpty(access)){
             await service.loginAsync(data);
-        }
+        //}
     }
 }

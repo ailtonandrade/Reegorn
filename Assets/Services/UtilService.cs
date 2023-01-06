@@ -13,7 +13,8 @@ public class UtilService
     {
         if (obj != null)
         {
-            HttpContent httpContent = new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8);
+            string json = JsonConvert.SerializeObject(obj);
+            HttpContent httpContent = new StringContent(json, Encoding.UTF8);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             return httpContent;
         }
