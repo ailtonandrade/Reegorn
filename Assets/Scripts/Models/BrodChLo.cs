@@ -9,7 +9,9 @@ public class BrodChLo
     public string posZ {get;set;}
     public string rot {get;set;}
 }
-
+public BrodChLo(){
+     }
+     
 public static BrodChLo parse(Vector3 pos,float rot){
     BrodChLo b = new BrodChLo();
     b.posX = _pos.x.ToString("N3");
