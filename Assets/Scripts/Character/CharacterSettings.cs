@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CharacterSettings : MonoBehaviour
 {
-  public static BrodChLo characterLocalSpace;
     public float positionX;
     public float positionY;
     public float positionZ;
