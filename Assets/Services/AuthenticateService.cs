@@ -1,49 +1,44 @@
 using System;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using UnityEngine;
 
-public class AuthenticateService : MonoBehaviour
+public class AuthenticateService : AbstractControl
 {
-    public static string tokenSession;
+    public static string tokenSession { get; private set; }
 
     public async Task loginAsync(UserModel user)
     {
         user.UserName = "andrade01";
         user.AccessKey = "123456";
-        
-        try
-        {
-            UtilService.ShowLoading();
-            var response = await UtilService.Post(UtilService.Uri("auth"),UtilService.Content(user));
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+
+        if(user.UserName != null && user.AccessKey != null){
+            try
             {
-                string contents = await response.Content.ReadAsStringAsync();
-                var _content = JObject.Parse(contents)["token"];
-                if(JObject.Parse(contents)["token"] != null){
-                    tokenSession = contents;
-                    SceneControl.Push("MainLand","Home");
-                    Debug.Log("Usuário Autenticado!");
+                var response = Post("auth", user);
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    string contents = await response.Content.ReadAsStringAsync();
+                    if (JsonParam(contents, "token") != null)
+                    {
+                        tokenSession = contents;
+                        PushDropScene("MainLand", "Home");
+                        Logger("Usuário Autenticado!");
+                    }
+
+
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    Logger("Usuário ou senha inválidos");
+                }
+                else
+                {
+                    Logger("Falha na conexão = " + response.StatusCode);
                 }
             }
-            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            catch (Exception ex)
             {
-                Debug.Log("Usuário ou senha inválidos");
-            }
-            else
-            {
-                Debug.Log("Falha na conexão = " + response.StatusCode);
+                Logger(ex.Message);
             }
         }
-        catch (Exception ex)
-        {
-            Debug.Log(ex.Message);
-        }
-        finally
-        {
-          UtilService.HideLoading();
-        }
-
     }
-
 }

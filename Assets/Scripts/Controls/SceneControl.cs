@@ -3,23 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneControl : MonoBehaviour
+public class SceneControl : SceneService
 {
     // Start is called before the first frame update
-    public static void Push(string? sceneLoad,string? sceneUnload){
-        if(!string.IsNullOrEmpty(sceneLoad))
+    public static void PushDrop(string? sceneLoad,string? sceneUnload){
+        if(!string.IsNullOrEmpty(sceneLoad)){
             SceneManager.LoadScene(sceneLoad, LoadSceneMode.Single);
+            getAllObj(sceneLoad);
+
+        }
         
         if(!string.IsNullOrEmpty(sceneUnload))
             SceneManager.UnloadSceneAsync(sceneUnload);
-    }
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

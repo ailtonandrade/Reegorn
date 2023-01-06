@@ -2,24 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CubePurple : MonoBehaviour
+public class CubePurple : ObjectModel
 {
-    public ObjectsModel infos;
     // Start is called before the first frame update
     void Start()
     {
-        infos.Id = 1;
-        infos.InternalId = "B21S5";
-        infos.Name = "CubePurple";
+        this.Id = 1;
+        this.InternalId = "B21S5";
+        this.Name = "CubePurple";
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     void OnMouseDown()
     {
-        GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterInteractions>().ObjectInteracted(infos);
+        GameObject.FindGameObjectWithTag(Common.playerTag).GetComponent<HudControl>().ObjectSelectedTopCenterHUD(this);
     }
 }

@@ -1,29 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class Terrain : MonoBehaviour
+public class Terrain : ObjectModel
 {
-    EnvironmentObjectsService service = new EnvironmentObjectsService();
-    public int Id = 0;
-    public string InternalId = "A21S5";
-    public string Name = "Terrain";
-    // Start is called before the first frame update
+
     void Start()
     {
+        this.Id = 0;
+        this.InternalId = "A21S5";
+        this.Name = "Terrain";
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     async void OnMouseDown()
     {
-        ObjectsModel infos = new ObjectsModel();
-        infos.Id = Id;
-        infos.InternalId = InternalId;
-        infos.Name = Name;
-        GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterInteractions>().ObjectInteracted(infos);
+        GameObject.FindGameObjectWithTag(Common.playerTag).GetComponent<HudControl>().ObjectSelectedTopCenterHUD(this);
 
     }
 }
