@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class AuthenticateService : MonoBehaviour
 {
-    public static string session;
+    public static string tokenSession;
 
     public async Task loginAsync(UserModel user)
     {
@@ -21,7 +21,7 @@ public class AuthenticateService : MonoBehaviour
                 string contents = await response.Content.ReadAsStringAsync();
                 var _content = JObject.Parse(contents)["token"];
                 if(JObject.Parse(contents)["token"] != null){
-                    session = contents;
+                    tokenSession = contents;
                     SceneControl.Push("MainLand","Home");
                     Debug.Log("Usuário Autenticado!");
                 }
