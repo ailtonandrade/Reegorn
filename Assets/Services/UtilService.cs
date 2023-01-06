@@ -9,34 +9,24 @@ public class UtilService
     private static string url = "http://localhost:5221/";
 
     //CONTENT GENERATOR
-    public static HttpContent GenContent(System.Object? obj, string? text)
+    public static HttpContent Content(System.Object? obj)
     {
-        if (obj != null)
-        {
             string json = JsonConvert.SerializeObject(obj);
             HttpContent httpContent = new StringContent(json, Encoding.UTF8);
             httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             return httpContent;
-        }
-        if (string.IsNullOrEmpty(text))
-        {
-            HttpContent httpContent = new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8);
-            httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            return httpContent;
-        }
-        return null;
     }
     //URI GENERATOR
-    public static Uri GenUri(string uri)
+    public static Uri Uri(string uri)
     {
         return new Uri(url + uri);
     }
     //REQUESTS
-    public static Task<HttpResponseMessage> GenPostAsync(Uri uri, HttpContent content)
+    public static Task<HttpResponseMessage> Post(Uri uri, HttpContent content)
     {
         return new HttpClient().PostAsync(uri, content);
     }
-    public static Task<HttpResponseMessage> GenGetAsync(string parameters)
+    public static Task<HttpResponseMessage> Get(string parameters)
     {
         return new HttpClient().GetAsync(url + parameters);
     }
