@@ -10,7 +10,6 @@ public class UserModel
      public string Type {get;set;}
 
      public UserModel(){
-
      }
         
 }
