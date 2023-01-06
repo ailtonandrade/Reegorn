@@ -35,6 +35,7 @@ public static void ShowLoading(string? detail)
     {
         GameObject.Find("HUD/HomeScreen/LoadingModal").gameObject.transform.localScale = new Vector3(1, 1, 0);
         //
+        //
         //implementar msg detail
     }
     
