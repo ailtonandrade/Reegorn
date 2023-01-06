@@ -11,14 +11,11 @@ public class AuthenticateService : MonoBehaviour
     {
         user.UserName = "andrade01";
         user.AccessKey = "123456";
-        GameObject.Find("HUD/HomeScreen/LoadingModal").gameObject.transform.localScale = new Vector3(1, 1, 0);
+        
         try
         {
-            var response = await UtilService.GenPostAsync(
-                                    UtilService.GenUri("auth"),
-                                    UtilService.GenContent(user,null)
-                                );
-
+            UtilService.ShowLoading();
+            var response = await UtilService.Post(UtilService.Uri("auth"),UtilService.Content(user));
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 string contents = await response.Content.ReadAsStringAsync();
@@ -44,7 +41,7 @@ public class AuthenticateService : MonoBehaviour
         }
         finally
         {
-            GameObject.Find("LoadingModal").gameObject.transform.localScale = new Vector3(0, 0, 0);
+          UtilService.HideLoading();
         }
 
     }
