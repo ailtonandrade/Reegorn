@@ -14,6 +14,6 @@ public class CubeOrange : ObjectModel
 
     void OnMouseDown()
     {
-        GameObject.FindGameObjectWithTag(Common.playerTag).GetComponent<HudControl>().ObjectSelectedTopCenterHUD(this);
+        GameObject.FindGameObjectWithTag(Common.playerTag).GetComponent<HUDMainLandControl>().ObjectSelectedTopCenterHUD(this);
     }
 }

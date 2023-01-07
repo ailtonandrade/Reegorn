@@ -6,7 +6,7 @@ using System.Dynamic;
 using UnityEngine.UI;
 using TMPro;
 
-public class HudControl : AbstractControl
+public class HUDMainLandControl : AbstractControl
 {
     public int objClickedId;
 
