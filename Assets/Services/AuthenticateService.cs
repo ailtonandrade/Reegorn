@@ -20,7 +20,7 @@ public class AuthenticateService : AbstractControl
                     if (JsonParam(contents, "token") != null)
                     {
                         tokenSession = contents;
-                        PushDropScene("MainLand", "Home");
+                        PushDropScene("SelectCharacter", "Home");
                         Logger("Usuário Autenticado!");
                     }
 
