@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class LocalService : AbstractControl
+public class LocalPlayerService : AbstractControl
 {
     public static async Task SyncPlayerLocal(ObjectModel character)
     {
