@@ -22,5 +22,4 @@ public class SceneService : AbstractControl
             Logger(e.InnerException.Message);
         }
     }
-
 }
