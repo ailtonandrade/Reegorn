@@ -8,16 +8,16 @@ using UnityEngine.Networking;
 
 public class SessionService : AbstractControl
 {
-    public static async Task<SceneModel> SyncScene(string scene)
+    public static async Task<SceneModel> SyncSession(string session)
     {
         try{
-          var response = Post("brdcst/brod-scene",scene);
+          var response = Post("brdcst/brod-session",scene);
           string response = await response.Content.ReadAsStringAsync();
-          SceneModel sceneData = JsonConvert.DeserializeObject<SceneModel>(response);
+          SessionModel sessionData = JsonConvert.DeserializeObject<SessionModel>(response);
           
-          Logger("-- Cena Sincronizada: "+   DateTime.Now);
+          Logger("-- Sessão Sincronizada: "+   DateTime.Now);
           await Task.Delay(5000);
-          return sceneData;
+          return sessionData;
         }catch (HttpRequestException e){
             Logger(e.InnerException.Message);
         }
