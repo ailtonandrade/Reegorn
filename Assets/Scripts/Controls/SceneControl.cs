@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneControl : SceneService
+public class SceneControl : SyncService
 {
     // Start is called before the first frame update
     public static void PushDrop(string? sceneLoad,string? sceneUnload){
