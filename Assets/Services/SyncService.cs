@@ -21,4 +21,19 @@ public class SyncService : AbstractControl
             Logger(e.InnerException.Message);
         }
     }
+    
+    public static async Task<SceneModel> SyncSchene(string scene)
+    {
+        try{
+          var response = Post("brdcst/brod-scene",scene);
+          string response = await response.Content.ReadAsStringAsync();
+          SceneModel sceneData = JsonConvert.DeserializeObject<SceneModel>(response);
+          
+          Logger("-- Cena Sincronizada: "+   DateTime.Now);
+          await Task.Delay(5000);
+          return sceneData;
+        }catch (HttpRequestException e){
+            Logger(e.InnerException.Message);
+        }
+    }
 }
