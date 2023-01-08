@@ -5,7 +5,7 @@ using UnityEngine;
 public class SessionModel : MonoBehaviour
 {
     public int Id {get;set;}
-    public List<ObjectModel> listPlayersInSession {get;set;} 
+    public List<ObjectsModel> listPlayersInSession {get;set;} 
     public string InternalId {get;set;}
     public string Name {get;set;}
     public string Hp {get;set;}
