@@ -8,9 +8,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class CharacterLocalService : AbstractControl
+public class LocalService : AbstractControl
 {
-    public static async Task SyncCharacterLocal(ObjectModel character)
+    public static async Task SyncPlayerLocal(ObjectModel character)
     {
         try{
           var response = Post("brdcst/brod-ch-lo",character);
