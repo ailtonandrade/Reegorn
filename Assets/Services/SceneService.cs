@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class SceneService : AbstractControl
+public class SessionService : AbstractControl
 {
     public static async Task<SceneModel> SyncScene(string scene)
     {
