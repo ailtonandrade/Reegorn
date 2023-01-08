@@ -8,20 +8,19 @@ using UnityEngine.Networking;
 
 public class SceneService : AbstractControl
 {
-    public static async void getAllObj(string sceneName)
+    public static async Task<SceneModel> SyncScene(string scene)
     {
-        var response = Post("environment-object",sceneName);
-        if (response.StatusCode == System.Net.HttpStatusCode.OK)
-        {
-            var contents = await response.Content.ReadAsStringAsync();
-            Logger(ToJson(contents));
-            Logger("Informações de Ojetos de Ambiente Carregadas!");
+        try{
+          var response = Post("brdcst/brod-scene",scene);
+          string response = await response.Content.ReadAsStringAsync();
+          SceneModel sceneData = JsonConvert.DeserializeObject<SceneModel>(response);
+          
+          Logger("-- Cena Sincronizada: "+   DateTime.Now);
+          await Task.Delay(5000);
+          return sceneData;
+        }catch (HttpRequestException e){
+            Logger(e.InnerException.Message);
         }
-        else
-        {
-            Logger("Erro ao carregar Informações de Ojetos de Ambiente");
-        }
-
     }
 
 }
