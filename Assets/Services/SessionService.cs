@@ -16,7 +16,7 @@ public class SessionService : AbstractControl
           string response = await request.Content.ReadAsStringAsync();
           SessionModel sessionData = JsonConvert.DeserializeObject<SessionModel>(response);
           
-          Logger("-- Sessão Sincronizada: "+   DateTime.Now);
+          Logger("-> Sessão Sincronizada: "+   DateTime.Now);
           await Task.Delay(5000);
           return sessionData;
         }catch (HttpRequestException e){
