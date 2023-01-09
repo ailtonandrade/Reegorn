@@ -9,5 +9,5 @@ Assembly-CSharp.csproj
 .vs/Reegorn/FileContentIndex/read.lock
 .vs
 .vs/Reegorn/v17/.suo
-/[Ll]ibrary/
+/Reegorn/[Ll]ibrary/
 [Ll]ibrary/
