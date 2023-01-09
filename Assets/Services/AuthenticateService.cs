@@ -32,7 +32,7 @@ public class AuthenticateService : AbstractControl
                 }
                 else
                 {
-                    Logger("Falha na conexão = " + response.StatusCode);
+                    Logger("Falha na conexão : " + response.StatusCode+DateTime.Now);
                 }
             }
             catch (Exception ex)
