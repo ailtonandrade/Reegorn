@@ -1,0 +1,13 @@
+Logs/*
+Temp/*
+obj/Debug/Assembly-CSharp.csproj.AssemblyReference.cache
+Assembly-CSharp.csproj
+.vs/Reegorn/v17/.suo
+.vs/Reegorn/FileContentIndex/199459f3-aab8-4722-962e-d1a9f00e7fad.vsidx
+.vs/Reegorn/FileContentIndex/c2dc0278-3b5d-43bf-98bd-2d855a8cf902.vsidx
+.vs/Reegorn/FileContentIndex/c706f501-b42f-46c3-a305-7fbd34c5f071.vsidx
+.vs/Reegorn/FileContentIndex/read.lock
+.vs
+.vs/Reegorn/v17/.suo
+/Reegorn/[Ll]ibrary/
+[Ll]ibrary/
