@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class Terrain : ObjectModel
+public class Terrain : ObjectDataModel
 {
 
     void Start()

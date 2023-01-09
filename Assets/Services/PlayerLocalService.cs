@@ -10,10 +10,10 @@ using UnityEngine;
 
 public class PlayerLocalService : AbstractControl
 {
-    public static async Task SyncPlayerLocal(ObjectModel character)
+    public static async Task SyncPlayerLocal(ObjectDataModel character)
     {
         try{
-          var response = Post("brdcst/brod-ch-lo",character);
+          var response = await Post("brdcst/brod-ch-lo",character);
           string contents = await response.Content.ReadAsStringAsync();
           Logger("-- Sincronizado: "+ DateTime.Now);
           await Task.Delay(10000);

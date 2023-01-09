@@ -13,14 +13,14 @@ public class AuthenticateService : AbstractControl
         if(user.UserName != null && user.AccessKey != null){
             try
             {
-                var response = Post("auth", user);
+                var response = await Post("auth", user);
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     string contents = await response.Content.ReadAsStringAsync();
                     if (JsonParam(contents, "token") != null)
                     {
-                        tokenSession = contents;
-                        PushDropScene("SelectCharacter", "Home");
+                        Common.token = JsonParam(contents, "token");
+                        await PushDropSceneAccAsync("SELECT_CHARACTER",user.UserName, "Home");
                         Logger("Usuário Autenticado!");
                     }
 

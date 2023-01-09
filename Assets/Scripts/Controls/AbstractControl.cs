@@ -9,16 +9,18 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 
-public class AbstractControl : ObjectModel
+public class AbstractControl : MonoBehaviour
 {
-
-    //POST - OBJECT
-    public static HttpResponseMessage Post(string endpoint, System.Object obj)
+    //POST - OBJECT DATA MODEL
+        public static async Task<HttpResponseMessage> Post(string endpoint, ObjectDataModel obj)
     {
         try
         {
             ShowLoading();
-            HttpResponseMessage response = new HttpClient().PostAsync(Endpoint(endpoint), Content(obj)).Result;
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Common.token);
+            HttpResponseMessage response = client.PostAsync(Endpoint(endpoint), Content(obj)).Result;
             return response;
         }
         catch (Exception ex)
@@ -31,6 +33,29 @@ public class AbstractControl : ObjectModel
         }
 
     }
+    //POST - OBJECT USER MODEL
+        public static async Task<HttpResponseMessage> Post(string endpoint, UserModel obj)
+    {
+        try
+        {
+            ShowLoading();
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Common.token);
+            HttpResponseMessage response = client.PostAsync(Endpoint(endpoint), Content(obj)).Result;
+            return response;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+        finally
+        {
+            HideLoading();
+        }
+
+    }
+
     //POST - STRING
     public static HttpResponseMessage Post(string endpoint, string text)
     {
@@ -68,14 +93,23 @@ public class AbstractControl : ObjectModel
             HideLoading();
         }
     }
-    //CONTENT - STRING
-    public static HttpContent Content(System.Object? obj)
+        //CONTENT - OBJ DATA MODEL
+    public static HttpContent Content(ObjectDataModel obj)
     {
         string json = JsonConvert.SerializeObject(obj);
         HttpContent httpContent = new StringContent(json, Encoding.UTF8);
         httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
         return httpContent;
     }
+    //CONTENT - OBJ
+    public static HttpContent Content(UserModel obj)
+    {
+        string json = JsonConvert.SerializeObject(obj);
+        HttpContent httpContent = new StringContent(json, Encoding.UTF8);
+        httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+        return httpContent;
+    }
+
     //CONTENT - OBJ
     public static HttpContent Content(string txt)
     {
@@ -123,9 +157,12 @@ public class AbstractControl : ObjectModel
     public static string FormatFloat(float val){
         return val.ToString("N3");;
     }
-
     public static void PushDropScene(string? sceneLoad, string? sceneUnload)
     {
         SceneControl.PushDrop(sceneLoad, sceneUnload);
+    }
+    public static async Task PushDropSceneAccAsync(string? sceneLoad,string? acc, string? sceneUnload)
+    {
+        await SceneControl.PushDropAccAsync(sceneLoad, acc, sceneUnload);
     }
 }

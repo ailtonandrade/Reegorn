@@ -11,7 +11,7 @@ public class HUDMainLandControl : AbstractControl
     public int objClickedId;
 
 
-    public void ObjectSelectedTopCenterHUD(ObjectModel obj){
+    public void ObjectSelectedTopCenterHUD(ObjectDataModel obj){
 
         GameObject.Find("TopCenterHUD").GetComponent<TopCenterHUDControl>()
         .SetNameSelectedObject(obj.Name);

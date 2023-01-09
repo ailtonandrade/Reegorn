@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CubeOrange : ObjectModel
+public class CubeOrange : ObjectDataModel
 {
     // Start is called before the first frame update
     void Start()

@@ -10,4 +10,5 @@ public class Common
 {
     public static string baseUrl = "http://localhost:5221/";
     public static string playerTag = "Player";
+    public static string token;
 }

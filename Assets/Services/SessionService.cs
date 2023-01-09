@@ -9,6 +9,22 @@ using UnityEngine.Networking;
 
 public class SessionService : AbstractControl
 {
+
+public static async Task<List<CharacterModel>> getCharacterList(ObjectDataModel obj)
+    {
+        try{
+          var request = await Post("acc/select-character",obj);
+          string response = await request.Content.ReadAsStringAsync();
+          List<CharacterModel> listCharacter = JsonConvert.DeserializeObject<List<CharacterModel>>(response);
+          
+          Logger("-> Lista Sincronizada: "+   DateTime.Now);
+          await Task.Delay(5000);
+          return listCharacter;
+        }catch (HttpRequestException e){
+            Logger(e.InnerException.Message);
+        }
+        return null;
+    }
     public static async Task<SessionModel> SyncSession(string session)
     {
         try{
@@ -19,6 +35,21 @@ public class SessionService : AbstractControl
           Logger("-> Sessão Sincronizada: "+   DateTime.Now);
           await Task.Delay(5000);
           return sessionData;
+        }catch (HttpRequestException e){
+            Logger(e.InnerException.Message);
+        }
+        return null;
+    }
+        public static async Task<List<CharacterModel>> SyncSession(ObjectDataModel obj)
+    {
+        try{
+          var request = await Post("acc/select-character",obj);
+          string response = await request.Content.ReadAsStringAsync();
+          List<CharacterModel> listCharacter = JsonConvert.DeserializeObject<List<CharacterModel>>(response);
+          
+          Logger("-> Sessão Sincronizada: "+   DateTime.Now);
+          await Task.Delay(5000);
+          return listCharacter;
         }catch (HttpRequestException e){
             Logger(e.InnerException.Message);
         }
