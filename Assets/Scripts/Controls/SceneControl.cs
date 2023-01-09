@@ -16,14 +16,15 @@ public class SceneControl : SessionService
         if(!string.IsNullOrEmpty(sceneUnload))
             SceneManager.UnloadSceneAsync(sceneUnload);
     }
-    public static async Task PushDropAccAsync(string? sceneLoad,string? param,string? sceneUnload){
+    public static async Task<List<CharacterModel>> getCharacterList(string? sceneLoad,string? param,string? sceneUnload){
+        List<CharacterModel> CharacterList = new List<CharacterModel>();
         switch(sceneLoad){
             case "SELECT_CHARACTER" :{
                 ObjectDataModel obj = new ObjectDataModel();
                 obj.Session = "SELECT_CHARACTER";
                 obj.Name = param;
-                List<CharacterModel> response = await getCharacterList(obj);
-                //TODO BUILD LIST CHARACTER(RESPONSE)
+                CharacterList = await getCharacterList(obj);
+                //TODO BUILD LIST CHARACTER()
                 SceneManager.LoadScene(sceneLoad, LoadSceneMode.Single);
                 SceneManager.UnloadSceneAsync(sceneUnload);
 
@@ -33,6 +34,7 @@ public class SceneControl : SessionService
                 break;
             }
         }
+        return CharacterList;
         
         
     }
