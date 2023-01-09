@@ -20,7 +20,7 @@ public class AuthenticateService : AbstractControl
                     if (JsonParam(contents, "token") != null)
                     {
                         Common.token = JsonParam(contents, "token");
-                        await PushDropSceneAccAsync("SELECT_CHARACTER",user.UserName, "Home");
+                        await getCharacterList("SELECT_CHARACTER",user.UserName, "Home");
                         Logger("Usuário Autenticado!");
                     }
 
