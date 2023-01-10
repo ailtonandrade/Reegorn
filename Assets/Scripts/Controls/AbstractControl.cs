@@ -161,8 +161,4 @@ public class AbstractControl : MonoBehaviour
     {
         SceneControl.PushDrop(sceneLoad, sceneUnload);
     }
-    public static async Task PushDropSceneAccAsync(string? sceneLoad,string? acc, string? sceneUnload)
-    {
-        await SceneControl.PushDropAccAsync(sceneLoad, acc, sceneUnload);
-    }
 }

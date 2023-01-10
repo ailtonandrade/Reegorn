@@ -20,7 +20,8 @@ public class AuthenticateService : AbstractControl
                     if (JsonParam(contents, "token") != null)
                     {
                         Common.token = JsonParam(contents, "token");
-                        await getCharacterList("SELECT_CHARACTER",user.UserName, "Home");
+                        
+                        HUDSelectCharacterControl.getCharacterList(user.UserName);
                         Logger("Usuário Autenticado!");
                     }
 
