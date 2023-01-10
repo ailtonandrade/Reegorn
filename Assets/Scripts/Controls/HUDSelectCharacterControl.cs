@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class HUDSelectCharacterControl : MonoBehaviour
+public class HUDSelectCharacterControl : AbstractControl
 {
     public void setCharacterList(ObjectDataModel obj)
     {
