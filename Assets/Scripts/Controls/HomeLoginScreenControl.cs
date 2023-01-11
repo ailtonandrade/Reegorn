@@ -37,6 +37,16 @@ public class HomeLoginScreenControl : AuthenticateService
 
     void Start()
     {
+        setLayout();
+        ButtonPlay.GetComponent<Button>()
+        .onClick.AddListener(async () => { 
+            UserModel user = new UserModel();
+            user.UserName = UserInput.GetComponent<TMP_InputField>().text;
+            user.AccessKey = PassInput.GetComponent<TMP_InputField>().text;
+            await loginAsync(user); 
+        });
+    }
+    void setLayout() {
         GameObject.Find("LoadingModal").gameObject.transform.localScale = new Vector3(0,0,0);
         halfScreenY = Screen.height / 2;
         halfScreenX = Screen.width / 2;
@@ -115,12 +125,5 @@ public class HomeLoginScreenControl : AuthenticateService
             PassLabelRect.sizeDelta = new Vector2(110, 24);
             PassInputRect.sizeDelta = new Vector2(110, 24);
         }
-        ButtonPlay.GetComponent<Button>()
-        .onClick.AddListener(async () => { 
-            UserModel user = new UserModel();
-            user.UserName = UserInput.GetComponent<TMP_InputField>().text;
-            user.AccessKey = PassInput.GetComponent<TMP_InputField>().text;
-            await loginAsync(user); 
-        });
     }
 }

@@ -131,14 +131,19 @@ public class AbstractControl : MonoBehaviour
     //SHOW MODAL LOADING COM MENSAGEM
     public static void ShowLoading(string detail)
     {
-        GameObject.Find("HUD/HomeScreen/LoadingModal").gameObject.transform.localScale = new Vector3(1, 1, 0);
+        var LoadingModal = Resources.Load<GameObject>("Res_Common/LoadingModa") as GameObject;
+        Instantiate(LoadingModal, new Vector3(1, 1, 0), Quaternion.identity);
         //
         //implementar msg detail
     }
 //HID MODAL LOADING
     public static void HideLoading()
     {
-        GameObject.Find("LoadingModal").gameObject.transform.localScale = new Vector3(0, 0, 0);
+        try{
+            Destroy(GameObject.Find("LoadingModal"));
+        }catch{
+            
+        }
     }
     //LOGGER
     public static void Logger(string content)
@@ -157,9 +162,20 @@ public class AbstractControl : MonoBehaviour
     public static string FormatFloat(float val){
         return val.ToString("N3");;
     }
+        public static void Push(string? sceneLoad)
+    {
+        SceneControl.Push(sceneLoad);
+        
+    }
     public static void PushDropScene(string? sceneLoad, string? sceneUnload)
     {
         SceneControl.PushDrop(sceneLoad, sceneUnload);
         
+    }
+    public static void Logout()
+    {
+        Common.acc = null;        
+        Common.accessKey = null;        
+        Common.token = null;        
     }
 }

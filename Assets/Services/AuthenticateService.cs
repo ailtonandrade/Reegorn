@@ -9,7 +9,7 @@ public class AuthenticateService : AbstractControl
     {
         user.UserName = "andrade01";
         user.AccessKey = "123456";
-
+        ShowLoading();
         if(user.UserName != null && user.AccessKey != null){
             try
             {
@@ -19,8 +19,11 @@ public class AuthenticateService : AbstractControl
                     string contents = await response.Content.ReadAsStringAsync();
                     if (JsonParam(contents, "token") != null)
                     {
-                        Common.token = JsonParam(contents, "token");
                         HUDSelectCharacterControl selectCharacterControl = new HUDSelectCharacterControl();
+
+                        Common.acc = user.UserName;
+                        Common.accessKey = user.AccessKey;
+                        Common.token = JsonParam(contents, "token");
                         selectCharacterControl.getCharacterList(user.UserName);
                         Logger("Usuário Autenticado!");
                     }
@@ -35,10 +38,14 @@ public class AuthenticateService : AbstractControl
                 {
                     Logger("Falha na conexão : " + response.StatusCode+DateTime.Now);
                 }
+                
             }
             catch (Exception ex)
             {
                 Logger(ex.Message);
+            }
+            finally{
+                HideLoading();
             }
         }
     }

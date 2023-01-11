@@ -10,7 +10,6 @@ public class HUDMainLandControl : AbstractControl
 {
     public int objClickedId;
 
-
     public void ObjectSelectedTopCenterHUD(ObjectDataModel obj){
 
         GameObject.Find("TopCenterHUD").GetComponent<TopCenterHUDControl>()
@@ -23,3 +22,4 @@ public class HUDMainLandControl : AbstractControl
     }
 
 }
+

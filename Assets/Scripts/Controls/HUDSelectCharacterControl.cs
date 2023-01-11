@@ -18,7 +18,7 @@ public class HUDSelectCharacterControl : AbstractControl
     {
         SceneControl.PushDropScene("SelectCharacter", null);
 
-        List<CharacterModel> characterList = await SessionService.getCharacterList(new ObjectDataModel() { Name = nameAcc });
+        List<CharacterModel> characterList = await CharacterService.getCharacterList(new ObjectDataModel() { Name = nameAcc });
 
         New = Resources.Load<GameObject>("Res_HUDSelectCharacter/ItemCharacterSelectNew") as GameObject;
         List = GameObject.Find("ListCharacterSelect");
