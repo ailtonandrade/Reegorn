@@ -6,12 +6,14 @@ using UnityEngine.SceneManagement;
 
 public class SceneControl : SessionService
 {
-    public static async void PushDrop(string? sceneLoad,string? sceneUnload){
+    public static void PushDrop(string? sceneLoad,string? sceneUnload){
         if(!string.IsNullOrEmpty(sceneLoad)){
             SceneManager.LoadScene(sceneLoad, LoadSceneMode.Single);
-            await SyncSession(sceneLoad);
+            //await SyncSession(sceneLoad);
         }
         if(!string.IsNullOrEmpty(sceneUnload))
             SceneManager.UnloadSceneAsync(sceneUnload);
+
+
     }
 }

@@ -160,5 +160,6 @@ public class AbstractControl : MonoBehaviour
     public static void PushDropScene(string? sceneLoad, string? sceneUnload)
     {
         SceneControl.PushDrop(sceneLoad, sceneUnload);
+        
     }
 }
