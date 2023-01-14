@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -8,19 +6,20 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AbstractControl : MonoBehaviour
 {
     //POST - OBJECT DATA MODEL
-        public static async Task<HttpResponseMessage> Post(string endpoint, ObjectDataModel obj)
+    public static async Task<HttpResponseMessage> Post(string endpoint, ObjectDataModel obj)
     {
         try
         {
-            ShowLoading();
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Common.token);
-            HttpResponseMessage response = client.PostAsync(Endpoint(endpoint), Content(obj)).Result;
+            HttpResponseMessage response = await client.PostAsync(Endpoint(endpoint), Content(obj));
+            await Task.Delay(2000);
             return response;
         }
         catch (Exception ex)
@@ -29,12 +28,12 @@ public class AbstractControl : MonoBehaviour
         }
         finally
         {
-            HideLoading();
+
         }
 
     }
     //POST - OBJECT USER MODEL
-        public static async Task<HttpResponseMessage> Post(string endpoint, UserModel obj)
+    public static async Task<HttpResponseMessage> Post(string endpoint, UserModel obj)
     {
         try
         {
@@ -42,7 +41,7 @@ public class AbstractControl : MonoBehaviour
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Common.token);
-            HttpResponseMessage response = client.PostAsync(Endpoint(endpoint), Content(obj)).Result;
+            HttpResponseMessage response = await client.PostAsync(Endpoint(endpoint), Content(obj));
             return response;
         }
         catch (Exception ex)
@@ -82,7 +81,7 @@ public class AbstractControl : MonoBehaviour
         {
             ShowLoading();
             HttpResponseMessage response = new HttpClient().GetAsync(endpoint).Result;
-        return response;
+            return response;
         }
         catch (Exception ex)
         {
@@ -93,7 +92,7 @@ public class AbstractControl : MonoBehaviour
             HideLoading();
         }
     }
-        //CONTENT - OBJ DATA MODEL
+    //CONTENT - OBJ DATA MODEL
     public static HttpContent Content(ObjectDataModel obj)
     {
         string json = JsonConvert.SerializeObject(obj);
@@ -124,25 +123,29 @@ public class AbstractControl : MonoBehaviour
     }
     public static void ShowLoading()
     {
-        GameObject.Find("HUD/HomeScreen/LoadingModal").gameObject.transform.localScale = new Vector3(1, 1, 0);
+        var LoadingModal = Resources.Load<GameObject>("Res_Common/LoadingModal") as GameObject;
+        Instantiate(LoadingModal, new Vector3(1, 1, 0), Quaternion.identity);
         //
         //implementar msg detail
     }
     //SHOW MODAL LOADING COM MENSAGEM
     public static void ShowLoading(string detail)
     {
-        var LoadingModal = Resources.Load<GameObject>("Res_Common/LoadingModa") as GameObject;
+        var LoadingModal = Resources.Load<GameObject>("Res_Common/LoadingModal") as GameObject;
         Instantiate(LoadingModal, new Vector3(1, 1, 0), Quaternion.identity);
         //
         //implementar msg detail
     }
-//HID MODAL LOADING
+    //HID MODAL LOADING
     public static void HideLoading()
     {
-        try{
-            Destroy(GameObject.Find("LoadingModal"));
-        }catch{
-            
+        try
+        {
+            GameObject.Find("LoadingModal").SetActive(false);
+        }
+        catch
+        {
+
         }
     }
     //LOGGER
@@ -155,27 +158,25 @@ public class AbstractControl : MonoBehaviour
     {
         return JObject.Parse(json)[param].ToString();
     }
-    public static string ToJson(System.Object? obj){
+    public static string ToJson(CharacterSettings obj)
+    {
+        return JsonConvert.SerializeObject(obj);
+    }
+    public static string ToJson(System.Object obj)
+    {
         return JsonConvert.SerializeObject(obj);
     }
     //PARSE FLOAT TO STRING
-    public static string FormatFloat(float val){
-        return val.ToString("N3");;
-    }
-        public static void Push(string? sceneLoad)
+    public static string FormatFloat(float val)
     {
-        SceneControl.Push(sceneLoad);
-        
+        return val.ToString("N3"); ;
     }
-    public static void PushDropScene(string? sceneLoad, string? sceneUnload)
-    {
-        SceneControl.PushDrop(sceneLoad, sceneUnload);
-        
-    }
+
     public static void Logout()
     {
-        Common.acc = null;        
-        Common.accessKey = null;        
-        Common.token = null;        
+        Common.acc = null;
+        Common.accessKey = null;
+        Common.token = null;
     }
+
 }

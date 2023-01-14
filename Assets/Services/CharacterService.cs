@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class CharacterService : AbstractControl
 {
@@ -14,9 +15,9 @@ public class CharacterService : AbstractControl
     {
         try
         {
-            var request = await Post("acc/select-character", obj);
+            var request =await Post("acc/select-character", obj);
             string response = await request.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<List<CharacterModel>>(response); ;
+            return JsonConvert.DeserializeObject<List<CharacterModel>>(response);
         }
         catch (HttpRequestException e)
         {
@@ -55,7 +56,6 @@ public class CharacterService : AbstractControl
             List<CharacterModel> listCharacter = JsonConvert.DeserializeObject<List<CharacterModel>>(response);
 
             Logger("-> Sessão Sincronizada: " + DateTime.Now);
-            await Task.Delay(5000);
             return listCharacter;
         }
         catch (HttpRequestException e)

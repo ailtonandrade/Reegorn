@@ -37,17 +37,20 @@ public class HomeLoginScreenControl : AuthenticateService
 
     void Start()
     {
-        setLayout();
-        ButtonPlay.GetComponent<Button>()
-        .onClick.AddListener(async () => { 
+        //setLayout();
+        onClickButtonPlay();
+
+
+    }
+    void onClickButtonPlay(){
+        GameObject.Find("ButtonPlay").GetComponent<Button>().onClick.AddListener(async () => { 
             UserModel user = new UserModel();
-            user.UserName = UserInput.GetComponent<TMP_InputField>().text;
-            user.AccessKey = PassInput.GetComponent<TMP_InputField>().text;
+            user.UserName = GameObject.Find("UserInput").GetComponent<TMP_InputField>().text;
+            user.AccessKey = GameObject.Find("PassInput").GetComponent<TMP_InputField>().text;
             await loginAsync(user); 
         });
     }
     void setLayout() {
-        GameObject.Find("LoadingModal").gameObject.transform.localScale = new Vector3(0,0,0);
         halfScreenY = Screen.height / 2;
         halfScreenX = Screen.width / 2;
         //modal inteiro

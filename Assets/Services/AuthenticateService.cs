@@ -9,7 +9,6 @@ public class AuthenticateService : AbstractControl
     {
         user.UserName = "andrade01";
         user.AccessKey = "123456";
-        ShowLoading();
         if(user.UserName != null && user.AccessKey != null){
             try
             {
@@ -20,7 +19,6 @@ public class AuthenticateService : AbstractControl
                     if (JsonParam(contents, "token") != null)
                     {
                         HUDSelectCharacterControl selectCharacterControl = new HUDSelectCharacterControl();
-
                         Common.acc = user.UserName;
                         Common.accessKey = user.AccessKey;
                         Common.token = JsonParam(contents, "token");
@@ -43,9 +41,6 @@ public class AuthenticateService : AbstractControl
             catch (Exception ex)
             {
                 Logger(ex.Message);
-            }
-            finally{
-                HideLoading();
             }
         }
     }

@@ -1,23 +1,20 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneControl : SessionService
+public class SceneControl : MonoBehaviour
 {
-    public static void PushDrop(string? sceneLoad,string? sceneUnload){
-        if(!string.IsNullOrEmpty(sceneLoad)){
-            Common.scene = sceneLoad;
-            SceneManager.LoadScene(sceneLoad, LoadSceneMode.Single);
-            //await SyncSession(sceneLoad);
+    public static void Push(string scene)
+    {
+        if (!string.IsNullOrEmpty(scene))
+        {
+            Common.scene = scene;
+            SceneManager.LoadSceneAsync(scene);
         }
-        if(!string.IsNullOrEmpty(sceneUnload))
-            SceneManager.UnloadSceneAsync(sceneUnload);
 
-    }
-        public static void Push(string? sceneLoad){
-            Common.scene = sceneLoad;
-            SceneManager.LoadScene(sceneLoad, LoadSceneMode.Single);
+        else
+        {
+            throw new System.Exception("Scene Manager could not find scene named " + scene);
+        }
     }
 }

@@ -40,5 +40,8 @@ public class CharacterMovement : MonoBehaviour
         movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
         Vector3 old_pos = this.transform.position;
         this.transform.position += movement * torque * Time.deltaTime;
+        CharacterSettings.positionX = this.transform.position.x;
+        CharacterSettings.positionY = this.transform.position.y;
+        CharacterSettings.positionZ = this.transform.position.z;
     }
 }
