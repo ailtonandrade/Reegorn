@@ -13,10 +13,10 @@ public class HUDMainLandControl : AbstractControl
     public void ObjectSelectedTopCenterHUD(ObjectDataModel obj){
 
         GameObject.Find("TopCenterHUD").GetComponent<TopCenterHUDControl>()
-        .SetNameSelectedObject(obj.Name);
+        .SetName(obj.name);
 
         GameObject.Find("TopCenterHUD").GetComponent<TopCenterHUDControl>()
-        .SetHpSelectedObject(obj.Hp);
+        .SetHp(obj.hp);
 
         Logger(ToJson(obj));
     }

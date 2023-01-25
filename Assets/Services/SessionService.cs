@@ -12,49 +12,45 @@ public class SessionService : AbstractControl
 {
     private static WebSocket ws;
 
-    public static async void SyncSession(string session, string characterJson)
+    public async static void SyncSession(string session, string characterJson)
     {
-
         try
         {
+            validateCharacterData(characterJson);
+            ws = connectWebSocket();
 
-            Common.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYW5kcmFkZTAxIiwibmJmIjoxNjczNzE5MTA1LCJleHAiOjE2NzM3MTkxMzUsImlhdCI6MTY3MzcxOTEwNX0.F7jHUKxGTaYwimdHAI1lOr1XG6rvLQJbiwzr_qwh69Q";
-            ws = new WebSocket("ws://localhost:1236/syncsession");
-            ws.SetCookie(new WebSocketSharp.Net.Cookie("token", Common.token));
-            ws.Connect();
-            SceneControl.Push(JsonParam(characterJson, "idSession"));
-            await Task.Delay(1000);
-            ws.Send(characterJson);
+            SceneControl.Push(session, 1000);
+            SendCharacter(ws);
+
             ws.OnMessage += (sender, e) =>
             {
                 try
                 {
-                    Logger("uodated : " + CharacterSettings.getJson());
-                    ws.Send(CharacterSettings.getJson());
+                    Logger("Updated : " + CharacterSettings.getJson());
+                    SendCharacter(ws);
                 }
                 catch (Exception ex)
                 {
                     Logger(ex.Message);
-                    ws.Close();
-                    Logout();
-                    SceneControl.Push("Home");
-
+                    Logout(ws);
                 }
-
             };
+
             ws.OnClose += (sender, e) =>
             {
-                ws.Close();
-                Logout();
-                SceneControl.Push("Home");
+                SceneControl.Push("Home", 1000);
             };
         }
-        catch (HttpRequestException e)
+        catch (Exception ex)
         {
-            Logger(e.InnerException.Message);
+            Logger(ex.InnerException.Message);
             Logout();
-            SceneControl.Push("Home");
+            SceneControl.Push("Home",1000);
         }
+    }
+    private static void SendCharacter(WebSocket ws)
+    {
+        ws.Send(CharacterSettings.getJson());
     }
     private static string updateCharacterData()
     {
@@ -62,5 +58,28 @@ public class SessionService : AbstractControl
 
         string resp = ToJson(ch);
         return ToJson(resp);
+    }
+    private static void validateCharacterData(string characterJson)
+    {
+        CharacterSettings.acc = JsonParam(characterJson, "acc");
+        CharacterSettings.name = JsonParam(characterJson, "name");
+        CharacterSettings.positionX = ParseFloat(JsonParam(characterJson, "positionX"));
+        CharacterSettings.positionY = ParseFloat(JsonParam(characterJson, "positioY"));
+        CharacterSettings.positionZ = ParseFloat(JsonParam(characterJson, "positionZ"));
+        CharacterSettings.rotation = ParseFloat(JsonParam(characterJson, "rotation"));
+    }
+    private static WebSocket connectWebSocket()
+    {
+        WebSocket ws = new WebSocket(EndpointWs("syncsession"));
+        ws.SetCookie(new WebSocketSharp.Net.Cookie("token", Common.token));
+        try
+        {
+            ws.Connect();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+        return ws;
     }
 }

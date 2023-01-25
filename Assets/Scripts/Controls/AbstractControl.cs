@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using WebSocketSharp;
 
 public class AbstractControl : MonoBehaviour
 {
@@ -121,6 +122,10 @@ public class AbstractControl : MonoBehaviour
     {
         return new Uri(Common.baseUrl + endpoint);
     }
+        public static string EndpointWs(string endpoint)
+    {
+        return new Uri(Common.baseUrlWs + endpoint).ToString();
+    }
     public static void ShowLoading()
     {
         var LoadingModal = Resources.Load<GameObject>("Res_Common/LoadingModal") as GameObject;
@@ -171,12 +176,23 @@ public class AbstractControl : MonoBehaviour
     {
         return val.ToString("N3"); ;
     }
+        public static float ParseFloat(string val)
+    {
+        return float.Parse(val);
+    }
 
     public static void Logout()
     {
         Common.acc = null;
         Common.accessKey = null;
         Common.token = null;
+    }
+        public static void Logout(WebSocket ws)
+    {
+        Common.acc = null;
+        Common.accessKey = null;
+        Common.token = null;
+        ws.Close();
     }
 
 }

@@ -29,39 +29,4 @@ public class CharacterService : AbstractControl
         }
         return null;
     }
-    public static async Task<SessionModel> SyncSession(string session)
-    {
-        try
-        {
-            var request = Post("sync/session-elements", session);
-            string response = await request.Content.ReadAsStringAsync();
-            SessionModel sessionData = JsonConvert.DeserializeObject<SessionModel>(response);
-
-            Logger("-> Sessão Sincronizada: " + DateTime.Now);
-            await Task.Delay(5000);
-            return sessionData;
-        }
-        catch (HttpRequestException e)
-        {
-            Logger(e.InnerException.Message);
-        }
-        return null;
-    }
-    public static async Task<List<CharacterModel>> SyncSession(ObjectDataModel obj)
-    {
-        try
-        {
-            var request = await Post("acc/select-character", obj);
-            string response = await request.Content.ReadAsStringAsync();
-            List<CharacterModel> listCharacter = JsonConvert.DeserializeObject<List<CharacterModel>>(response);
-
-            Logger("-> Sessão Sincronizada: " + DateTime.Now);
-            return listCharacter;
-        }
-        catch (HttpRequestException e)
-        {
-            Logger(e.InnerException.Message);
-        }
-        return null;
-    }
 }

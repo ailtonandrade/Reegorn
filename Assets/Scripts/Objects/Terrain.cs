@@ -6,9 +6,9 @@ public class Terrain : ObjectDataModel
 
     void Start()
     {
-        this.Id = 0;
-        this.InternalId = "A21S5";
-        this.Name = "Terrain";
+        this.id = 0;
+        this.internalId = "A21S5";
+        this.name = "Terrain";
     }
 
     async void OnMouseDown()

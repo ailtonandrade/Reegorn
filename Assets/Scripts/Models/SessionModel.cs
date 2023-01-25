@@ -9,9 +9,9 @@ public class SessionModel : MonoBehaviour
     public string InternalId {get;set;}
     public string Name {get;set;}
     public string Hp {get;set;}
-    public string posX {get;set;}
-    public string posY {get;set;}
-    public string posZ {get;set;}
-    public string rot {get;set;}
+    public string positionX {get;set;}
+    public string positionY {get;set;}
+    public string positionZ {get;set;}
+    public string rotation {get;set;}
      
 }

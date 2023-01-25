@@ -13,7 +13,7 @@ public class ItemCharacterSelectControl : AbstractControl
         this.GetComponent<Button>().onClick.AddListener(() =>
         {
             Logger("Logging with: " + character);
-            SessionService.SyncSession(JsonParam(character,"idSession"),character);
+            SessionService.SyncSession(JsonParam(character,"idSession"),CharacterSettings.getJson());
         });
     }
 }

@@ -7,9 +7,9 @@ public class CubeOrange : ObjectDataModel
     // Start is called before the first frame update
     void Start()
     {
-        this.Id = 2;
-        this.InternalId = "C21S5";
-        this.Name = "CubeOrange";
+        this.id = 2;
+        this.internalId = "C21S5";
+        this.name = "CubeOrange";
     }
 
     void OnMouseDown()
