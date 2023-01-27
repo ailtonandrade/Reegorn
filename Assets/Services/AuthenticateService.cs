@@ -10,26 +10,35 @@ public class AuthenticateService : AbstractControl
         validateUser(user);
         try
         {
-            var response = await Post("auth", user);
+            var response = await Login(user);
+            string contents = await response.Content.ReadAsStringAsync();
+
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                string contents = await response.Content.ReadAsStringAsync();
                 validateAccess(user, contents);
                 getListCharacters(user);
+                UpdateCommon();
                 Logger("Usuário Autenticado!");
             }
             else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
                 Logger("Usuário ou senha inválidos");
+                Logout();
+
             }
             else
             {
-                Logger("Falha na conexão : " + response.StatusCode + DateTime.Now);
+                Logger("Falha na conexão : " + ToJson(response) + DateTime.Now);
+                Logout();
+
             }
         }
-        catch (Exception ex)
+        catch
         {
-            Logger(ex.Message);
+            Logger("Falha na conexão : " + DateTime.Now);
+            Logout();
+            throw new Exception("Erro de conexão.");
+
         }
     }
     private void validateAccess(UserModel user, string contents)
@@ -57,6 +66,6 @@ public class AuthenticateService : AbstractControl
     private void getListCharacters(UserModel user)
     {
         HUDSelectCharacterControl selectCharacterControl = new HUDSelectCharacterControl();
-        selectCharacterControl.getCharacterList(user.UserName);
+        selectCharacterControl.getCharacterList(user);
     }
 }

@@ -15,13 +15,13 @@ public class HUDSelectCharacterControl : AbstractControl
     private float posY = 400;
     private float space = 50;
 
-    public async void getCharacterList(string nameAcc)
+    public async void getCharacterList(UserModel acc)
     {
 
         try
         {
             SceneControl.Push("SelectCharacter");
-            List<CharacterModel> characterList = await CharacterService.getCharacterList(new ObjectDataModel() { name = nameAcc });
+            List<CharacterModel> characterList = await CharacterService.getCharacterList(acc);
 
             List = GameObject.Find("ListCharacterSelect");
             New = Resources.Load<GameObject>("Res_HUDSelectCharacter/ItemCharacterSelectNew") as GameObject;
@@ -74,7 +74,7 @@ public class HUDSelectCharacterControl : AbstractControl
         catch (Exception ex)
         {
             Logger(ToJson("Erro no login!"));
-
+            Logout();
             throw;
         }
 

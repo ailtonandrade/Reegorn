@@ -10,28 +10,33 @@ using WebSocketSharp;
 
 public class SessionService : AbstractControl
 {
-    private static WebSocket ws;
+    public static WebSocket ws;
 
-    public async static void SyncSession(string session, string characterJson)
+
+    public async static void SyncSession(string local, CharacterModel character)
     {
         try
         {
-            validateCharacterData(characterJson);
+            validateCharacterData(character);
             ws = connectWebSocket();
 
-            SceneControl.Push(session, 1000);
+            SceneControl.Push(local, 1000);
             SendCharacter(ws);
 
-            ws.OnMessage += (sender, e) =>
+            ws.OnMessage += async (sender, e) =>
             {
                 try
                 {
-                    Logger("Updated : " + CharacterSettings.getJson());
-                    SendCharacter(ws);
+                    if (await validateSessionData(e.Data))
+                    {
+                        UpdateCommon();
+                        //Logger("All Players of Session Info : " + DateTime.Now);
+                        SendCharacter(ws);
+                    }
                 }
                 catch (Exception ex)
                 {
-                    Logger(ex.Message);
+                    Logger("Erro ao obter informações da sessão.");
                     Logout(ws);
                 }
             };
@@ -45,7 +50,7 @@ public class SessionService : AbstractControl
         {
             Logger(ex.InnerException.Message);
             Logout();
-            SceneControl.Push("Home",1000);
+            SceneControl.Push("Home", 1000);
         }
     }
     private static void SendCharacter(WebSocket ws)
@@ -59,14 +64,27 @@ public class SessionService : AbstractControl
         string resp = ToJson(ch);
         return ToJson(resp);
     }
-    private static void validateCharacterData(string characterJson)
+    private static void validateCharacterData(CharacterModel character)
     {
-        CharacterSettings.acc = JsonParam(characterJson, "acc");
-        CharacterSettings.name = JsonParam(characterJson, "name");
-        CharacterSettings.positionX = ParseFloat(JsonParam(characterJson, "positionX"));
-        CharacterSettings.positionY = ParseFloat(JsonParam(characterJson, "positioY"));
-        CharacterSettings.positionZ = ParseFloat(JsonParam(characterJson, "positionZ"));
-        CharacterSettings.rotation = ParseFloat(JsonParam(characterJson, "rotation"));
+        try
+        {
+            CharacterSettings.acc = character.acc;
+            CharacterSettings.name = character.name;
+            CharacterSettings.hp = character.hp;
+            CharacterSettings.local = character.local;
+            CharacterSettings.world = character.world;
+            CharacterSettings.idSession = character.idSession;
+            CharacterSettings.positionX = character.positionX;
+            CharacterSettings.positionY = character.positionY;
+            CharacterSettings.positionZ = character.positionZ;
+            CharacterSettings.rotation = character.rotation;
+        }
+        catch
+        {
+            Logger("Erro ao obter informações da sessão.");
+            Logout(ws);
+        }
+
     }
     private static WebSocket connectWebSocket()
     {
@@ -81,5 +99,25 @@ public class SessionService : AbstractControl
             throw new Exception(ex.Message);
         }
         return ws;
+    }
+    private async static Task<bool> validateSessionData(string data)
+    {
+        try
+        {
+            SessionModel dataList = JsonConvert.DeserializeObject<SessionModel>(data);
+            loadSessionObjects(dataList);
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Erro ao carregar dados da sessão");
+        }
+    }
+    private static void loadSessionObjects(SessionModel dataList)
+    {
+        SessionControl.dataList = dataList;
+
+        Logger(ToJson(dataList.players));
     }
 }

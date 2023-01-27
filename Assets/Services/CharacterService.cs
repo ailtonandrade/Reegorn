@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 public class CharacterService : AbstractControl
 {
 
-    public static async Task<List<CharacterModel>> getCharacterList(ObjectDataModel obj)
+    public static async Task<List<CharacterModel>> getCharacterList(UserModel obj)
     {
         try
         {

@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CubePurple : MonoBehaviour
+public class CharacterSessionSettings : MonoBehaviour
 {
-    
-    // Start is called before the first frame update
     void Start()
     {
+
     }
 
-    void OnMouseDown()
+    async void OnMouseDown()
     {
         GameObject.FindGameObjectWithTag(Common.playerTag).GetComponent<HUDMainControl>().ObjectSelectedTopCenterHUD(this.gameObject);
+
     }
 }

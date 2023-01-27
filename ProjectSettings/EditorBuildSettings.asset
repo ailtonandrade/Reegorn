@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/SelectCharacter.unity
     guid: 53a54e6df1fd9494e852b476416ce1b9
   - enabled: 1
-    path: Assets/Scenes/MAIN_LAND.unity
+    path: Assets/Scenes/LIMBO.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -12,7 +13,7 @@ using WebSocketSharp;
 public class AbstractControl : MonoBehaviour
 {
     //POST - OBJECT DATA MODEL
-    public static async Task<HttpResponseMessage> Post(string endpoint, ObjectDataModel obj)
+    public static async Task<HttpResponseMessage> Post(string endpoint, UserModel obj)
     {
         try
         {
@@ -33,16 +34,15 @@ public class AbstractControl : MonoBehaviour
         }
 
     }
-    //POST - OBJECT USER MODEL
-    public static async Task<HttpResponseMessage> Post(string endpoint, UserModel obj)
+    //POST - LOGIN
+    public static async Task<HttpResponseMessage> Login(UserModel obj)
     {
         try
         {
             ShowLoading();
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Common.token);
-            HttpResponseMessage response = await client.PostAsync(Endpoint(endpoint), Content(obj));
+            HttpResponseMessage response = await client.PostAsync(Endpoint("auth"), Content(obj));
             return response;
         }
         catch (Exception ex)
@@ -122,7 +122,7 @@ public class AbstractControl : MonoBehaviour
     {
         return new Uri(Common.baseUrl + endpoint);
     }
-        public static string EndpointWs(string endpoint)
+    public static string EndpointWs(string endpoint)
     {
         return new Uri(Common.baseUrlWs + endpoint).ToString();
     }
@@ -171,12 +171,16 @@ public class AbstractControl : MonoBehaviour
     {
         return JsonConvert.SerializeObject(obj);
     }
+    public static string ToJson(List<SessionModel> obj)
+    {
+        return JsonConvert.SerializeObject(obj);
+    }
     //PARSE FLOAT TO STRING
     public static string FormatFloat(float val)
     {
         return val.ToString("N3"); ;
     }
-        public static float ParseFloat(string val)
+    public static float ParseFloat(string val)
     {
         return float.Parse(val);
     }
@@ -186,13 +190,28 @@ public class AbstractControl : MonoBehaviour
         Common.acc = null;
         Common.accessKey = null;
         Common.token = null;
+        SceneControl.Push("Home", 1000);
+
     }
-        public static void Logout(WebSocket ws)
+    public static void Logout(WebSocket ws)
     {
         Common.acc = null;
         Common.accessKey = null;
         Common.token = null;
         ws.Close();
-    }
+        SceneControl.Push("Home", 1000);
 
+    }
+    public static void UpdateCommon()
+    {
+        Common.lastUpdate = DateTime.Now;
+    }
+    public static void checkConnection()
+    {
+        if (Common.lastUpdate.AddSeconds(60) < DateTime.Now)
+        {
+            Logger("Erro ao obter informações da sessão.");
+            Logout(SessionService.ws);
+        }
+    }
 }

@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectDataModel
+public class ObjectDataModel : MonoBehaviour
 {
-    public int id {get;set;}
-    public string internalId {get;set;}
-    public string name {get;set;}
-    public string hp {get;set;}
-    public string positionX {get;set;}
-    public string positionY {get;set;}
-    public string positionZ {get;set;}
-    public string rotation {get;set;}
-    public string idSession {get;set;}
-    public string gameObject {get;set;}
+    public string? id { get; set; }
+    public string? internalId { get; set; }
+    public string? name { get; set; }
+    public long? hp { get; set; }
+    public float positionX { get; set; }
+    public float positionY { get; set; }
+    public float positionZ { get; set; }
+    public float rotation { get; set; }
+    public string? world { get; set; }
+    public string? local { get; set; }
      
 }
