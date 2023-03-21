@@ -68,6 +68,7 @@ public class SessionService : AbstractControl
     {
         try
         {
+            Logger(ToJson(character));
             CharacterSettings.acc = character.acc;
             CharacterSettings.name = character.name;
             CharacterSettings.hp = character.hp;
@@ -104,6 +105,7 @@ public class SessionService : AbstractControl
     {
         try
         {
+            Logger(data);
             SessionModel dataList = JsonConvert.DeserializeObject<SessionModel>(data);
             loadSessionObjects(dataList);
 

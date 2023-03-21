@@ -20,7 +20,7 @@ public class SessionControl : AbstractControl
 
     private static void loadDataListPlayers()
     {
-        if (dataList.players.Count > 0)
+        if (dataList != null && dataList.players.Count > 0)
         {
 
             foreach (CharacterModel character in dataList.players)
@@ -46,24 +46,29 @@ public class SessionControl : AbstractControl
     }
     private void loadDataListEnvironments()
     {
-        if (dataList.environments.Count > 0)
+
+        if (dataList.environments == null)
+        {
+            Logger("Lista de Elementos Vazia.");
+        }
+
+        if (dataList.environments != null && dataList.environments.Count > 0)
         {
             foreach (ObjectDataModel envObj in dataList.environments)
             {
-                if (envObj.name != null)
+
+
+                GameObject env = GameObject.Find(envObj.id);
+                if (env != null)
                 {
-                    GameObject env = GameObject.Find(envObj.id);
-                    if (env != null)
-                    {
-                        env.transform.position = new Vector3(envObj.positionX, envObj.positionY, envObj.positionZ);
-                        env.transform.rotation = Quaternion.Euler(0, envObj.rotation, 0);
-                    }
-                    else
-                    {
-                        GameObject prefab = loadResource(envObj);
-                        GameObject p = instantiateResource(prefab, envObj);
-                        buildPrefabSettings(p, envObj);
-                    }
+                    env.transform.position = new Vector3(envObj.positionX, envObj.positionY, envObj.positionZ);
+                    env.transform.rotation = Quaternion.Euler(0, envObj.rotation, 0);
+                }
+                else
+                {
+                    GameObject prefab = loadResource(envObj);
+                    GameObject p = instantiateResource(prefab, envObj);
+                    buildPrefabSettings(p, envObj);
                 }
             }
         }
