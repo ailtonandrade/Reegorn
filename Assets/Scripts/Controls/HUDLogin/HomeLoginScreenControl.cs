@@ -42,15 +42,77 @@ public class HomeLoginScreenControl : AuthenticateService
 
 
     }
-    void onClickButtonPlay(){
-        GameObject.Find("ButtonPlay").GetComponent<Button>().onClick.AddListener(async () => { 
+    void onClickButtonPlay()
+    {
+        GameObject.Find("ButtonPlay").GetComponent<Button>().onClick.AddListener(async () =>
+        {
             UserModel user = new UserModel();
             user.UserName = GameObject.Find("UserInput").GetComponent<TMP_InputField>().text;
             user.AccessKey = GameObject.Find("PassInput").GetComponent<TMP_InputField>().text;
-            await loginAsync(user); 
+            var response = await loginAsync(user);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                // VALIDA SE HÁ UM IP VÁLIDO SOLICITANTE DO LOGIN
+                validateIsNewIpAddress(user, contents);
+                //CASO IP NOVO, SOLICITAR CONFIANÇA AO USUÁRIO
+                alertAboutNewIpAddress(user, contents);
+
+                validateAccess(user, contents);
+
+                if (ErrorModel.isValid())
+                {
+                    getListCharacters(user);
+                    UpdateCommon();
+                    Logger("Usuário Autenticado!");
+                }
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                Logger("Usuário ou senha inválidos");
+                Logout();
+            }
+            else
+            {
+                Logger("Falha na conexão : " + ToJson(response) + DateTime.Now);
+                Logout();
+            }
         });
     }
-    void setLayout() {
+    private void alertAboutNewIpAddress(UserModel user, string contents)
+    {
+        //CASO O IP SEJA RESPONDIDO COMO NOVO PELA API, MOSTRA O MODAL PARA CONFIRMAR SALVAMENTO DE CONFIANÇA
+        if (user.IsNewIpAddress == 1)
+        {
+            //CHAMA E AGUARDA RETORNO COM RESPOSTA
+            string response = await ShowConfirmModal("Atenção", "Um Novo IP foi detectado, deseja adicioná-lo como confiável ?", JsonParam(contents, "IpAddress"), true, false, true);
+            //TODO : CRIAR METODOS QUE TRATAM A RESPOSTA DO MODAL
+            switch (response)
+            {
+                case "YES":
+                    {
+                        SetIpAsDenied(user,false);
+                        break;
+                    }
+                case "NO":
+                    {
+                        SetIpAsDenied(user,true);
+                        break;
+                    }
+                case "OK":
+                    {
+                        break;
+                    }
+                case "CANCEL":
+                    {
+                        break;
+                    }
+            }
+        }
+    }
+
+    void setLayout()
+    {
         halfScreenY = Screen.height / 2;
         halfScreenX = Screen.width / 2;
         //modal inteiro

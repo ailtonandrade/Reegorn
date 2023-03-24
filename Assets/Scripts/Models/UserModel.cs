@@ -8,6 +8,8 @@ public class UserModel
      public string UserName {get;set;}
      public string AccessKey {get;set;}
      public string Type {get;set;}
+     public string IpAddress {get;set;}
+     public int IsNewIpAddress {get;set;}
 
      public UserModel(){
      }

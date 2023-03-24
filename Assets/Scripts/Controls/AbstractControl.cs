@@ -35,14 +35,13 @@ public class AbstractControl : MonoBehaviour
 
     }
     //POST - LOGIN
-    public static async Task<HttpResponseMessage> Login(UserModel obj)
+    public static async Task<HttpResponseMessage> Login(string hash, string ipAddress)
     {
         try
         {
-            ShowLoading();
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Clear();
-            HttpResponseMessage response = await client.PostAsync(Endpoint("auth"), Content(obj));
+            HttpResponseMessage response = await client.PostAsync(Endpoint("auth"), ContentLogin(hash, ipAddress));
             return response;
         }
         catch (Exception ex)
@@ -93,9 +92,10 @@ public class AbstractControl : MonoBehaviour
             HideLoading();
         }
     }
-    //CONTENT - OBJ DATA MODEL
-    public static HttpContent Content(ObjectDataModel obj)
+    //CONTENT - LOGIN
+    public static HttpContent ContentLogin(string hash, string address)
     {
+        var obj = new { Hash = hash, IpAddress = address };
         string json = JsonConvert.SerializeObject(obj);
         HttpContent httpContent = new StringContent(json, Encoding.UTF8);
         httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
@@ -113,7 +113,9 @@ public class AbstractControl : MonoBehaviour
     //CONTENT - OBJ
     public static HttpContent Content(string txt)
     {
-        HttpContent httpContent = new StringContent(txt, Encoding.UTF8);
+        var obj = new { Content = txt };
+        string json = JsonConvert.SerializeObject(obj);
+        HttpContent httpContent = new StringContent(json, Encoding.UTF8);
         httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
         return httpContent;
     }
@@ -132,6 +134,63 @@ public class AbstractControl : MonoBehaviour
         Instantiate(LoadingModal, new Vector3(1, 1, 0), Quaternion.identity);
         //
         //implementar msg detail
+    }
+    //SHOW MODAL CONFIRM MODAL
+    public static async Task<string> ShowConfirmModal(string title, string msg, string msgDetail, bool showYesNo, bool showOk, bool showClose)
+    {
+        string response = "";
+        //INSTANCIA OBJETO DO MODAL
+        var AlertConfirmModal = Resources.Load<GameObject>("Res_Common/AlertConfirmModal") as GameObject;
+        Instantiate(AlertConfirmModal, new Vector3(1, 1, 0), Quaternion.identity);
+        //ATRIBUI TEXTOS NAS AREAS
+        AlertConfirmModal.transform.FindChild("Title").GetComponentInChildren<Text>().text = title;
+        AlertConfirmModal.transform.FindChild("Msg").GetComponentInChildren<Text>().text = msg;
+        AlertConfirmModal.transform.FindChild("MssgDetail").GetComponentInChildren<Text>().text = msgDetail;
+        //ATRIBUI BOTOES A VARIÁVEIS E OS VALORES DOS PARÂMETROS
+        Button btnYes = AlertConfirmModal.transform.FindChild("Yes").gameObject.SetActive(showYesNo);
+        Button btnNo = AlertConfirmModal.transform.FindChild("No").gameObject.SetActive(showYesNo);
+        Button btnOk = AlertConfirmModal.transform.FindChild("Ok").gameObject.SetActive(showOk);
+        Button btnClose = AlertConfirmModal.transform.FindChild("Close").gameObject.SetActive(showClose);
+        //ADD LISTENERS COM RESPOSTA PARA OS BOTOES
+        if (showYesNo)
+        {
+            btnYes.onClick.AddListener(() =>
+            {
+                response = "YES";
+            });
+        };
+        if (showYesNo)
+        {
+            btnNo.onClick.AddListener(() =>
+            {
+                response = "NO";
+            });
+        };
+        if (showOk)
+        {
+            btnOk.onClick.AddListener(() =>
+            {
+                response = "OK";
+            });
+        };
+        if (showClose)
+        {
+            btnClose.onClick.AddListener(() =>
+            {
+                response = "CLOSE";
+            });
+        };
+        //AGUARDA RESPOSTA PARA DEVOLVER O RETORNO
+        while (response == "")
+        {
+            await Task.Delay(1000);
+        }
+        return response;
+    }
+
+    public static void HideConfirmModal(string detail)
+    {
+        GameObject.Find("AlertConfirmModal").SetActive(false);
     }
     //SHOW MODAL LOADING COM MENSAGEM
     public static void ShowLoading(string detail)
@@ -190,6 +249,8 @@ public class AbstractControl : MonoBehaviour
         Common.acc = null;
         Common.accessKey = null;
         Common.token = null;
+        ErrorModel.IpValid = null;
+        ErrorModel.LoginValid = null;
         SceneControl.Push("Home", 1000);
 
     }
@@ -198,6 +259,8 @@ public class AbstractControl : MonoBehaviour
         Common.acc = null;
         Common.accessKey = null;
         Common.token = null;
+        ErrorModel.IpValid = null;
+        ErrorModel.LoginValid = null;
         ws.Close();
         SceneControl.Push("Home", 1000);
 
@@ -210,7 +273,9 @@ public class AbstractControl : MonoBehaviour
     {
         if (Common.lastUpdate.AddSeconds(60) < DateTime.Now)
         {
-            Logger("Erro ao obter informações da sessão.");
+            string msg = "Erro ao obter informações da sessão.";
+            ErrorModel.LoginValid = msg;
+            Logger(msg);
             Logout(SessionService.ws);
         }
     }
