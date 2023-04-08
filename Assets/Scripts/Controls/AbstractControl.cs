@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using WebSocketSharp;
 
@@ -136,57 +137,57 @@ public class AbstractControl : MonoBehaviour
         //implementar msg detail
     }
     //SHOW MODAL CONFIRM MODAL
-    public static async Task<string> ShowConfirmModal(string title, string msg, string msgDetail, bool showYesNo, bool showOk, bool showClose)
-    {
-        string response = "";
-        //INSTANCIA OBJETO DO MODAL
-        var AlertConfirmModal = Resources.Load<GameObject>("Res_Common/AlertConfirmModal") as GameObject;
-        Instantiate(AlertConfirmModal, new Vector3(1, 1, 0), Quaternion.identity);
-        //ATRIBUI TEXTOS NAS AREAS
-        AlertConfirmModal.transform.FindChild("Title").GetComponentInChildren<Text>().text = title;
-        AlertConfirmModal.transform.FindChild("Msg").GetComponentInChildren<Text>().text = msg;
-        AlertConfirmModal.transform.FindChild("MssgDetail").GetComponentInChildren<Text>().text = msgDetail;
-        //ATRIBUI BOTOES A VARIÁVEIS E OS VALORES DOS PARÂMETROS
-        Button btnYes = AlertConfirmModal.transform.FindChild("Yes").gameObject.SetActive(showYesNo);
-        Button btnNo = AlertConfirmModal.transform.FindChild("No").gameObject.SetActive(showYesNo);
-        Button btnOk = AlertConfirmModal.transform.FindChild("Ok").gameObject.SetActive(showOk);
-        Button btnClose = AlertConfirmModal.transform.FindChild("Close").gameObject.SetActive(showClose);
-        //ADD LISTENERS COM RESPOSTA PARA OS BOTOES
-        if (showYesNo)
-        {
-            btnYes.onClick.AddListener(() =>
-            {
-                response = "YES";
-            });
-        };
-        if (showYesNo)
-        {
-            btnNo.onClick.AddListener(() =>
-            {
-                response = "NO";
-            });
-        };
-        if (showOk)
-        {
-            btnOk.onClick.AddListener(() =>
-            {
-                response = "OK";
-            });
-        };
-        if (showClose)
-        {
-            btnClose.onClick.AddListener(() =>
-            {
-                response = "CLOSE";
-            });
-        };
-        //AGUARDA RESPOSTA PARA DEVOLVER O RETORNO
-        while (response == "")
-        {
-            await Task.Delay(1000);
-        }
-        return response;
-    }
+    // public static async Task<string> ShowConfirmModal(string title, string msg, string msgDetail, bool showYesNo, bool showOk, bool showClose)
+    // {
+    //     string response = "";
+    //     //INSTANCIA OBJETO DO MODAL
+    //     var AlertConfirmModal = Resources.Load<GameObject>("Res_Common/AlertConfirmModal") as GameObject;
+    //     Instantiate(AlertConfirmModal, new Vector3(1, 1, 0), Quaternion.identity);
+    //     //ATRIBUI TEXTOS NAS AREAS
+    //     AlertConfirmModal.transform.Find("Title").GetComponentInChildren<Text>().text = title;
+    //     AlertConfirmModal.transform.Find("Msg").GetComponentInChildren<Text>().text = msg;
+    //     AlertConfirmModal.transform.Find("MssgDetail").GetComponentInChildren<Text>().text = msgDetail;
+    //     //ATRIBUI BOTOES A VARIÁVEIS E OS VALORES DOS PARÂMETROS
+    //     Button btnYes = AlertConfirmModal.transform.Find("Yes").gameObject.SetActive(showYesNo);
+    //     Button btnNo = AlertConfirmModal.transform.Find("No").gameObject.SetActive(showYesNo);
+    //     Button btnOk = AlertConfirmModal.transform.Find("Ok").gameObject.SetActive(showOk);
+    //     Button btnClose = AlertConfirmModal.transform.Find("Close").gameObject.SetActive(showClose);
+    //     //ADD LISTENERS COM RESPOSTA PARA OS BOTOES
+    //     if (showYesNo)
+    //     {
+    //         btnYes.onClick.AddListener(() =>
+    //         {
+    //             response = "YES";
+    //         });
+    //     };
+    //     if (showYesNo)
+    //     {
+    //         btnNo.onClick.AddListener(() =>
+    //         {
+    //             response = "NO";
+    //         });
+    //     };
+    //     if (showOk)
+    //     {
+    //         btnOk.onClick.AddListener(() =>
+    //         {
+    //             response = "OK";
+    //         });
+    //     };
+    //     if (showClose)
+    //     {
+    //         btnClose.onClick.AddListener(() =>
+    //         {
+    //             response = "CLOSE";
+    //         });
+    //     };
+    //     //AGUARDA RESPOSTA PARA DEVOLVER O RETORNO
+    //     while (response == "")
+    //     {
+    //         await Task.Delay(1000);
+    //     }
+    //     return response;
+    // }
 
     public static void HideConfirmModal(string detail)
     {
@@ -278,5 +279,8 @@ public class AbstractControl : MonoBehaviour
             Logger(msg);
             Logout(SessionService.ws);
         }
+    }
+    public static string NoCloneName(string nameGameObject){
+        return nameGameObject.Replace("(Clone)","").Trim();
     }
 }

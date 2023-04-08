@@ -10,13 +10,13 @@ public class AuthenticateService : AbstractControl
 {
     public static string tokenSession { get; private set; }
 
-    public async Task loginAsync(UserModel user)
+    public async Task<HttpResponseMessage> loginAsync(UserModel user)
     {
         validateUser(user);
         try
         {
             var response = await Login(GetHash("andrade01" + "123456"), await GetAddress());
-            string contents = await response.Content.ReadAsStringAsync();
+            var contents = response;
 
             return contents;
         }
@@ -50,7 +50,7 @@ public class AuthenticateService : AbstractControl
             return sb.ToString();
         }
     }
-    private void validateAccess(UserModel user, string contents)
+    public void validateAccess(UserModel user, string contents)
     {
         // VERIFICA SE O TOKEN CONTEM INFORMAÇÕES CORRETAS
         if (JsonParam(contents, "token") != null)
@@ -68,37 +68,7 @@ public class AuthenticateService : AbstractControl
             throw new Exception(msg);
         }
     }
-    private bool validateIsNewIpAddress(UserModel user, string contents)
-    {
-        //VERIFICA SE O CONTEUDO DE RESPOSTA CONTÉM DADOS DE IP
-        if (JsonParam(contents, "token") != null)
-        {
-            try
-            {
-                //VERIFICA SE O IP EXISTENTE É NOVO OU JÁ UTILIZADO
-                if (JsonParam(contents, "IsNewIpAddress") == 1)
-                {
-                    //ATRIBUI MENSAGEM DE ERRO MONITORADA EM CLASSE ESTÁTICA
-                    ErrorModel.IpValid = "Novo IP Detectado";
-                    Logger("Novo IP Detectado, " + JsonParam(contents, "IpAddress"));
-                    return 1;
-                }
-                return 0;
-            }
-            catch (Exception ex)
-            {
-                string msg = "Não foi possível validar acesso.";
-                Logger(msg);
-                ErrorModel.IpValid = msg;
-                throw new Exception(msg);
-            }
-
-        }
-        else
-        {
-            throw new Exception("Erro ao efetuar login.");
-        }
-    }
+    
     private void validateUser(UserModel user)
     {
         user.UserName = "andrade01";
@@ -108,7 +78,7 @@ public class AuthenticateService : AbstractControl
             throw new Exception("Erro ao efetuar login.");
         }
     }
-    private void getListCharacters(UserModel user)
+    public void getListCharacters(UserModel user)
     {
         HUDSelectCharacterControl selectCharacterControl = new HUDSelectCharacterControl();
         selectCharacterControl.getCharacterList(user);
@@ -134,17 +104,5 @@ public class AuthenticateService : AbstractControl
         // retorna o endereço IP externo
         return enderecoIP;
     }
-    private async string SetIpAsDenied(UserModel contents, bool isDenied)
-    {
-        try
-        {
-            //....continuar fazendo o endpoint la na API
-            var request = await Post("acc/address-denied", contents);
-            return response = await request.Content.ReadAsStringAsync();
-        }
-        catch (HttpRequestException e)
-        {
-            Logger(e.InnerException.Message);
-        }
-    }
+
 }
